@@ -1,0 +1,340 @@
+/* Importar fuentes de Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Roboto+Mono:wght@400;700&display=swap');
+
+/* Definición de variables CSS para la paleta de colores */
+:root {
+    --color-negro: #000;
+    --color-oro: #FFD700;
+    --color-gris-claro: #E0E0E0;
+    --color-blanco-calido: #F5F5DC;
+    --color-gris-suave: #BDBDBD;
+    --color-gris-oscuro: #1a1a1a;
+    --color-borde: #333;
+}
+
+/* Estilos generales para el cuerpo de la página */
+body {
+    background-color: var(--color-negro);
+    color: var(--color-gris-claro);
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+/* Contenedor principal para la cabecera y el menú fijos */
+.fixed-header-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: var(--color-negro);
+    padding-bottom: 20px;
+}
+
+/* Estilos para el encabezado */
+.main-header {
+    padding-top: 30px;
+}
+
+/* Animación para el título (efecto neón/glitch) */
+@keyframes neonGlow {
+    0%, 100% { text-shadow: 0 0 5px var(--color-oro), 0 0 10px var(--color-oro), 0 0 20px rgba(255, 215, 0, 0.4); }
+    50% { text-shadow: 0 0 2px var(--color-oro), 0 0 5px var(--color-oro), 0 0 10px rgba(255, 215, 0, 0.2); }
+}
+
+/* Estilos para el título principal */
+.site-title {
+    margin: 0 0 15px 0;
+    font-size: 2.5em;
+    font-weight: 700;
+    color: var(--color-oro);
+    font-family: 'Roboto Mono', monospace;
+    animation: neonGlow 2s ease-in-out infinite alternate;
+}
+
+/* Estilos para el logotipo */
+.logo {
+    width: 200px;
+    height: auto;
+    margin-bottom: 25px; /* Dejamos un margen inferior para separar del menú */
+    transition: filter 0.4s ease-in-out;
+}
+
+.logo:hover {
+    filter: brightness(1.2) drop-shadow(0 0 15px rgba(255, 215, 0, 0.6));
+}
+
+/* Estilos para el menú de navegación */
+.main-nav ul {
+    list-style: none;
+    margin: 0 auto;
+    max-width: 1220px;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+/* Estilos para los botones del menú */
+.main-nav a {
+    position: relative;
+    display: inline-block;
+    text-decoration: none;
+    color: var(--color-negro);
+    font-weight: 400;
+    font-size: 1em;
+    padding: 10px 20px;
+    border: 1px solid var(--color-borde);
+    border-radius: 5px;
+    background-color: var(--color-blanco-calido);
+    transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+    overflow: hidden;
+}
+
+/* Animación de borde para los botones */
+.main-nav a::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: var(--color-oro);
+    transform: scaleX(0);
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Efecto al pasar el ratón */
+.main-nav a:hover {
+    background-color: var(--color-oro);
+    transform: translateY(-5px);
+    color: var(--color-negro);
+    box-shadow: 0 0 10px var(--color-oro), 0 0 20px rgba(255, 215, 0, 0.4);
+}
+
+.main-nav a:hover::before {
+    transform: scaleX(1);
+}
+
+/* Estilos para la línea divisoria */
+.divider {
+    border: none;
+    height: 1px;
+    background-color: var(--color-borde);
+    width: 70%;
+    margin: 20px auto;
+}
+
+/* Animación de entrada para el contenedor del contenido */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Contenedor que empuja el contenido hacia abajo para que no quede bajo el menú fijo */
+.content-wrapper {
+    padding-top: 410px; /* Ajuste crucial para dar más espacio y ver el texto */
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* ---------------------------------------------------- */
+/* ESTILOS ESPECÍFICOS POR PÁGINA */
+/* ---------------------------------------------------- */
+
+/* Estilos para el contenido de la página de Inicio */
+.main-content {
+    padding: 20px 20px;
+    max-width: 1220px;
+    margin: 20px auto;
+}
+
+.main-content p {
+    text-align: justify;
+    color: var(--color-blanco-calido);
+    font-family: 'Roboto Mono', monospace;
+}
+
+/* Estilos para la página de Contacto */
+.contacto-content {
+    padding: 20px 20px;
+    max-width: 1220px;
+    margin: 20px auto;
+}
+
+.contacto-content p {
+    color: var(--color-blanco-calido);
+    font-family: 'Roboto Mono', monospace;
+    text-align: center;
+}
+
+.contacto-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.contacto-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-decoration: none;
+    color: var(--color-blanco-calido);
+    font-size: 1.2em;
+    font-family: 'Poppins', sans-serif;
+    margin-bottom: 20px;
+    transition: color 0.3s ease, transform 0.3s ease;
+    width: 250px;
+}
+
+.contacto-item i {
+    font-size: 1.8em;
+    width: 30px;
+    text-align: center;
+    margin-right: 15px;
+    color: var(--color-gris-suave);
+    transition: color 0.3s ease;
+}
+
+.contacto-item:hover {
+    color: var(--color-oro);
+    transform: translateX(10px);
+}
+
+.contacto-item:hover i {
+    color: var(--color-oro);
+}
+
+/* Estilos para la página de Conocimientos */
+.conocimientos-content {
+    padding: 20px 20px;
+    max-width: 1220px;
+    margin: 20px auto;
+}
+
+.conocimientos-content p {
+    color: var(--color-blanco-calido);
+    font-family: 'Roboto Mono', monospace;
+    text-align: center;
+}
+
+.conocimientos-secciones {
+    text-align: left;
+    max-width: 800px;
+    margin: 40px auto;
+}
+
+.conocimientos-secciones h3 {
+    color: var(--color-oro);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--color-oro);
+    padding-bottom: 5px;
+}
+
+.conocimientos-secciones ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 30px;
+}
+
+.conocimientos-secciones li {
+    position: relative;
+    padding-left: 25px;
+    margin-bottom: 10px;
+    color: var(--color-gris-claro);
+    font-family: 'Poppins', sans-serif;
+}
+
+.conocimientos-secciones li::before {
+    content: '›';
+    color: var(--color-oro);
+    font-size: 1.5em;
+    position: absolute;
+    left: 0;
+    top: -5px;
+}
+
+/* Estilos para las guías de Máquinas */
+.maquina-guia {
+    text-align: left;
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    border: 1px solid var(--color-borde);
+    border-radius: 8px;
+    background-color: var(--color-gris-oscuro);
+}
+
+.titulo-maquina {
+    color: var(--color-oro);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.8em;
+    margin-bottom: 15px;
+    border-bottom: 1px solid var(--color-oro);
+    padding-bottom: 5px;
+}
+
+.texto-maquina {
+    color: var(--color-gris-claro);
+    font-family: 'Poppins', sans-serif;
+    font-size: 1em;
+    line-height: 1.6;
+}
+
+/* ---------------------------------------------------- */
+/* NUEVOS ESTILOS PARA LAS IMÁGENES Y EL LIGHTBOX */
+/* ---------------------------------------------------- */
+
+/* Ajuste de imágenes para que sean pequeñas y uniformes */
+.maquina-guia img {
+    width: 300px; /* Tamaño de ancho fijo */
+    height: auto; /* El alto se ajusta proporcionalmente */
+    cursor: pointer; /* Muestra una manito para indicar que es clicable */
+    display: block; /* Ocupa su propia línea */
+    margin: 15px auto; /* Centra la imagen y le da un poco de espacio */
+    border: 1px solid var(--color-borde); /* Un borde sutil para enmarcarla */
+    border-radius: 5px; /* Bordes redondeados */
+    transition: transform 0.3s ease-in-out;
+}
+
+.maquina-guia img:hover {
+    transform: scale(1.02); /* Efecto de "zoom" al pasar el ratón */
+}
+
+/* Estilo del lightbox (la ventana emergente) */
+.lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9); /* Fondo oscuro semitransparente */
+    display: none; /* Empieza oculto y JavaScript lo mostrará */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Asegura que esté por encima de todo */
+}
+
+.lightbox-content {
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.lightbox-content img {
+    width: auto; /* La imagen se muestra en su tamaño original o el que permita el contenedor */
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+}

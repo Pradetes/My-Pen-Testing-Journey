@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Máquinas HTB/INE - Camino al eJPTv2</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <h1 class="site-title">Máquinas HTB/INE</h1>
+        <img src="logo_JAPR-removebg-preview.png" alt="Logotipo personal" class="logo">
+    </header>
+
+    <nav class="main-nav">
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="conocimientos.html">Mis Conocimientos</a></li>
+            <li><a href="maquinas.html">Máquinas HTB/INE</a></li>
+            <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+    </nav>
+    
+    <hr class="divider">
+
+    <main class="content">
+        <h2>Guías de Resolución de Máquinas</h2>
+
+        <div class="maquina-guia">
+            <h3 class="titulo-maquina">Assessment Methodologies: Information Gathering CTF 1</h3>
+            <p class="texto-maquina">
+                Esta es la primera máquina que hago del INE. Se corresponde con la recolección de información, un paso muy importante antes de comenzar con el pentesting. Es lógico que debemos saber dónde atacar y para ello, hace falta tener conocimiento de todo lo que hay.
+
+                Esta máquina, como el resto de las del INE, sugieren lo que hay que buscar, pero no es una palabra o un concepto, sino que hay que encontrar la FLAG. Comencemos:</p>
+            <p><strong>La primera pregunta</strong> dice lo siguiente:  "This tells search engines what to and what not to avoid."
+            Lo que hay que hacer es buscar dentro del "robots.txt", que es lo que le dice a los buscadores qué pueden mirar y qué no. Entrando en este archivo obtendremos la primera FLAG.</p>
+            <!-- <br> -->
+            <a href="#flag1" class="lightbox-trigger">
+                <img src="images/flag1.jpg" alt="Fl@g1">
+            </a>
+            <!-- <br> -->
+            <p>Para la segunda pregunta, nos piden lo siguiente: <strong>What website is running on the target, and what is its version?</strong>Esto lo podemos saber usando el comndo nmap de la siguiente forma:</p>
+            <!-- <br> -->
+            <a href="#flag2" class="lightbox-trigger">
+                <img src="images/flag2.jpg" alt="Fl@g2">
+            </a>
+            <p>NOTA: Otra opción quizás más sencilla sería con el comando 'whatweb'</p>
+            <!-- <br> -->
+            <p>Pasamos con la <strong>tercera flag: Directory browsing might reveal where files are stored.</strong></p>
+            <p>Aquí tocamos un comando muy interesante que se llama 'dirb'. Con él podemos enumerar los subdominios en busca de qué podría ser interesante de ver. Sería algo así:</p>
+            <p>dirb target.ine.local</p>
+            <!-- <br> -->
+            <a href="#dirb" class="lightbox-trigger">
+                <img src="images/target3 dirb.jpg" alt="Salida de dirb">
+            </a>
+            <!-- <br> -->
+            <p>Una vez que ejecutamos el comando, miramos en varios subdominios hasta ver uno muy interesante que es el de 'uploads'. Al entar en dicha parte, vemos lo que estamos buscando,que es la tercera flag.</p>
+            <!-- <br> -->
+            <a href="#flag3" class="lightbox-trigger">
+                <img src="images/flag3.jpg" alt="Fl@g3">
+            </a>
+        </div>
+
+        </main>
+
+    <script src="lightbox.js"></script>
+</body>
+</html>

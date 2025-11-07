@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TÍTULO DE LA GUÍA AQUÍ</title>
+    <meta name="description" content="Añade aquí un resumen de la guía o máquina (ej: Guía práctica sobre la vulnerabilidad X).">
+    <meta name="author" content="José Prados">
+    
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+
+    <div class="fixed-header-container">
+        <header class="main-header">
+            <h1 class="site-title">Máquinas HTB / INE</h1>
+        </header>
+
+        <nav class="main-nav">
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="conocimientos.html">Mis Conocimientos</a></li>
+                <li><a href="maquinas.html" aria-current="page">Máquinas HTB / INE</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+            </ul>
+        </nav>
+
+        <hr class="divider">
+    </div>
+
+    <div class="content-wrapper">
+        <main class="maquina-guia">
+            
+            <h2 class="titulo-maquina">TÍTULO DE LA MÁQUINA O CONOCIMIENTO AQUÍ</h2>
+            <p class="texto-maquina"><strong>Resumen:</strong> Breve descripción o resumen de la técnica o máquina.</p>
+
+            <details>
+                <summary style="color: var(--color-oro); cursor: pointer;">⚠️ Aviso educativo</summary>
+                <p style="margin-top: 10px;">
+                    Esta guía tiene fines exclusivamente educativos y está pensada para entornos controlados
+                    como laboratorios o máquinas virtuales. No debe usarse en sistemas o redes sin autorización expresa.
+                </p>
+            </details>
+
+            <p class="texto-maquina">
+                
+                <h3>Fase 1: Reconocimiento</h3>
+                Aquí detallas los pasos iniciales, como escaneos de puertos o enumeración de servicios.
+                
+                <p>Comando Nmap:</p>
+                <pre><code>nmap -sV -p- -T4 [IP_OBJETIVO]</code></pre>
+                
+                <h3>Fase 2: Explotación</h3>
+                Descripción de la vulnerabilidad y el método de explotación.
+                
+                <p>Comando de explotación:</p>
+                <pre><code>python exploit.py -t [IP_OBJETIVO]</code></pre>
+
+                <h3>Fase 3: Post-Explotación y Escalada de Privilegios</h3>
+                Cómo conseguir la shell de root/admin.
+                
+                <p>Subir la reverse shell con Netcat:</p>
+                <pre><code>nc -lvnp 4444</code></pre>
+                
+                ¡Y eso es todo! Máquina completada. 🎉
+            </p>
+
+            <p><a href="maquinas.html" style="color: var(--color-oro); text-decoration: none;">← Volver al Índice de Máquinas</a></p>
+        </main>
+    </div>
+
+</body>
+</html>

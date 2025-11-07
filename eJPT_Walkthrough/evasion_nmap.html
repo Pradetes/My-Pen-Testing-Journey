@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evasión de Firewalls & IDS con Nmap</title>
+    <meta name="description" content="Guía detallada sobre comandos avanzados de Nmap para evadir Firewalls e IDS usando fragmentación, decoys y temporización.">
+    <meta name="author" content="José Prados">
+    
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+
+    <div class="fixed-header-container">
+        <header class="main-header">
+            <h1 class="site-title">Máquinas HTB / INE</h1>
+        </header>
+
+        <nav class="main-nav">
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><li><a href="conocimientos.html">Mis Conocimientos</a></li></li>
+                <li><a href="maquinas.html" aria-current="page">Máquinas HTB / INE</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+            </ul>
+        </nav>
+
+        <hr class="divider">
+    </div>
+
+    <div class="content-wrapper">
+        <main class="maquina-guia">
+            
+            <h2 class="titulo-maquina">Evasión de Firewalls & IDS (Nmap)</h2>
+            <p class="texto-maquina">
+                <strong>Resumen:</strong> Técnicas avanzadas de Nmap para realizar escaneos sigilosos, evadir sistemas de detección de intrusiones (IDS) y determinar si un firewall está filtrando puertos.
+            </p>
+
+            <div class="texto-maquina">
+                
+                <h3>1. Detección de Firewalls (Scan ACK)</h3>
+                <p>Para saber si un puerto está filtrado o no por un firewall, podemos usar un escaneo ACK (<code>-sA</code>). Si el puerto responde como "no filtrado", el firewall no está interfiriendo en el tráfico. Si pone "filtrado", es probable que haya un firewall o alguna regla bloqueando la respuesta.</p>
+                <pre><code>nmap -Pn -sA -p [puertos que queremos saber] [IP]</code></pre>
+
+                <h3>2. Técnicas de Evasión Básica</h3>
+                <p>Para pasar desapercibido ante un IDS/IPS, podemos usar las siguientes opciones:</p>
+                
+                <h4>Fragmentación de Paquetes (<code>-f</code> o <code>--mtu</code>)</h4>
+                <ul>
+                    <li><strong>Fragmentar Header (<code>-f</code>):</strong> Esta flag fragmenta el *header* del paquete en un tamaño más pequeño para intentar eludir la detección. Es efectiva contra sistemas de detección antiguos.</li>
+                    <li><strong>MTU (<code>--mtu</code>):</strong> Permite definir el tamaño exacto del paquete que se va a enviar (debe ser un múltiplo). Si conocemos el sistema de detección, podemos ajustar el tamaño al máximo posible para pasar inadvertidos.</li>
+                </ul>
+                <pre><code>nmap -Pn -sS -sV -p [puertos] -f --mtu 32 [IP]</code></pre>
+
+                <h3>3. Escaneo Avanzado con Múltiples Técnicas de Evasión</h3>
+                <p>Este escaneo es ideal cuando tenemos fuertes sospechas de que hay varios programas intentando detectarnos. Combina sigilo, fragmentación y ofuscación de origen:</p>
+                <pre><code>nmap -Pn -T1 -sS -sV -p445,3389 -f --data-length 200 -D [IP_DECOY_1],[IP_DECOY_2],ME [IP_VÍCTIMA]</code></pre>
+                
+                <h4>Desglose de la Sintaxis:</h4>
+                <ol>
+                    <li><strong><code>-Pn</code> (No Ping):</strong> Salta la fase de descubrimiento de host (ping ICMP) asumiendo que el objetivo está activo. Es esencial si el firewall bloquea el ping.</li>
+                    <li><strong><code>-T1</code> (Sneaky):</strong> Modo de tiempo más lento. Minimiza la velocidad de envío de paquetes para evitar la detección por parte de un IDS.</li>
+                    <li><strong><code>-sS</code> (SYN Scan):</strong> Realiza el escaneo de puertos principal de forma "sigilosa" sin completar el *handshake* TCP.</li>
+                    <li><strong><code>-sV</code> (Version Detection):</strong> Detecta el servicio y la versión exacta en los puertos abiertos.</li>
+                    <li><strong><code>-p445,3389</code>:</strong> Puertos Específicos. (Ejemplo: SMB y RDP).</li>
+                    <li><strong><code>-f</code> (Fragmentación):</strong> Divide los paquetes de escaneo en fragmentos más pequeños, confundiendo a los sistemas IDS antiguos.</li>
+                    <li><strong><code>--data-length 200</code> (Datos Aleatorios):</strong> Inserta 200 bytes de datos aleatorios para evitar la detección por firmas de IDS.</li>
+                    <li><strong><code>-D [IP_DECOY_1],[IP_DECOY_2],ME</code> (Decoy/Engaño):</strong> Envía el escaneo desde múltiples direcciones IP. La etiqueta <code>ME</code> es sustituida por tu IP real, mezclándola con las IPs falsas (Decoy). **Nota:** Las IPs de Decoy deben ser IPs activas en la red.</li>
+                </ol>
+                <p>Al usar el <b>Decoy</b>, si monitorizas la red con Wireshark, verás que los paquetes de escaneo parecen provenir de múltiples orígenes, confundiendo al sistema de monitoreo.</p>
+
+                <h3>4. Control de Temporización (Scan Delay)</h3>
+                <p>Si quieres pasar aún más desapercibido, puedes espaciar los intervalos entre el envío de paquetes para no levantar sospechas y evitar la detección por límite de velocidad:</p>
+                <pre><code>nmap -sS -sV -F --scan-delay 15s [IP]</code></pre>
+                <p>El parámetro <code>--scan-delay 15s</code> añade un retardo de 15 segundos entre el envío de cada paquete.</p>
+
+                <h3>5. Spoofing de Puerto de Origen</h3>
+                <p>Por último, el parámetro <code>-g</code> o <code>--source-port</code> hace que tu escaneo parezca provenir de un puerto de origen específico (ej. puerto 53 para DNS, que a menudo está permitido en firewalls).</p>
+                <pre><code>nmap -g 53 [IP]</code></pre>
+                
+            </div>
+
+            <p><a href="maquinas.html" style="color: var(--color-oro); text-decoration: none;">← Volver al Índice de Máquinas</a></p>
+        </main>
+    </div>
+
+</body>
+</html>

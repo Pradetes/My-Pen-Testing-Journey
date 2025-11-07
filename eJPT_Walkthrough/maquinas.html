@@ -7,63 +7,72 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="fixed-header-container">
+        <header class="main-header">
+            <h1 class="site-title">Máquinas HTB / INE</h1>
+        </header>
 
-    <header class="main-header">
-        <h1 class="site-title">Máquinas HTB/INE</h1>
-        <img src="logo_JAPR-removebg-preview.png" alt="Logotipo personal" class="logo">
-    </header>
+        <nav class="main-nav">
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="conocimientos.html">Mis Conocimientos</a></li>
+                <li><a href="maquinas.html">Máquinas HTB/INE</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+            </ul>
+        </nav>
 
-    <nav class="main-nav">
-        <ul>
-            <li><a href="index.html">Inicio</a></li>
-            <li><a href="conocimientos.html">Mis Conocimientos</a></li>
-            <li><a href="maquinas.html">Máquinas HTB/INE</a></li>
-            <li><a href="contacto.html">Contacto</a></li>
-        </ul>
-    </nav>
-    
-    <hr class="divider">
+        <hr class="divider">
+    </div>
 
-    <main class="content">
-        <h2>Guías de Resolución de Máquinas</h2>
+    <div class="content-wrapper" style="padding-top: 190px;">
+        <main> 
+            <!-- <h2 style="color: var(--color-oro); font-family: 'Roboto Mono', monospace; margin-top: -30px; margin-bottom: 20px;">Guías de Resolución de Máquinas</h2> -->
+            
+            <p style="max-width: 800px; margin: 0 auto 40px; text-align: justify; color: var(--color-blanco-calido);">
+                En esta sección encontrarás mis write-ups de máquinas tanto de <strong>Hack The Box</strong> como del <strong>INE</strong>.
+                Cada una incluye las herramientas empleadas, razonamientos y pasos realizados durante la explotación. 
+                Este listado se irá ampliando cada pocos días con nuevas incorporaciones.
+            </p>
 
-        <div class="maquina-guia">
-            <h3 class="titulo-maquina">Assessment Methodologies: Information Gathering CTF 1</h3>
-            <p class="texto-maquina">
-                Esta es la primera máquina que hago del INE. Se corresponde con la recolección de información, un paso muy importante antes de comenzar con el pentesting. Es lógico que debemos saber dónde atacar y para ello, hace falta tener conocimiento de todo lo que hay.
+            <div class="maquina-lista">
+                <article class="maquina-card">
+                    <img src="images/nmap.jpg" alt="Info Gathering" class="maquina-thumb">
+                    <h3><a href="evasion_nmap.html">Firewalls & IDS Evasion</a></h3>
+                    <p>Usando nmap veremos métodos de evasión y detección muy útiles.</p>
+                </article>
 
-                Esta máquina, como el resto de las del INE, sugieren lo que hay que buscar, pero no es una palabra o un concepto, sino que hay que encontrar la FLAG. Comencemos:</p>
-            <p><strong>La primera pregunta</strong> dice lo siguiente:  "This tells search engines what to and what not to avoid."
-            Lo que hay que hacer es buscar dentro del "robots.txt", que es lo que le dice a los buscadores qué pueden mirar y qué no. Entrando en este archivo obtendremos la primera FLAG.</p>
-            <!-- <br> -->
-            <a href="#flag1" class="lightbox-trigger">
-                <img src="images/flag1.jpg" alt="Fl@g1">
-            </a>
-            <!-- <br> -->
-            <p>Para la segunda pregunta, nos piden lo siguiente: <strong>What website is running on the target, and what is its version?</strong>Esto lo podemos saber usando el comndo nmap de la siguiente forma:</p>
-            <!-- <br> -->
-            <a href="#flag2" class="lightbox-trigger">
-                <img src="images/flag2.jpg" alt="Fl@g2">
-            </a>
-            <p>NOTA: Otra opción quizás más sencilla sería con el comando 'whatweb'</p>
-            <!-- <br> -->
-            <p>Pasamos con la <strong>tercera flag: Directory browsing might reveal where files are stored.</strong></p>
-            <p>Aquí tocamos un comando muy interesante que se llama 'dirb'. Con él podemos enumerar los subdominios en busca de qué podría ser interesante de ver. Sería algo así:</p>
-            <p>dirb target.ine.local</p>
-            <!-- <br> -->
-            <a href="#dirb" class="lightbox-trigger">
-                <img src="images/target3 dirb.jpg" alt="Salida de dirb">
-            </a>
-            <!-- <br> -->
-            <p>Una vez que ejecutamos el comando, miramos en varios subdominios hasta ver uno muy interesante que es el de 'uploads'. Al entar en dicha parte, vemos lo que estamos buscando,que es la tercera flag.</p>
-            <!-- <br> -->
-            <a href="#flag3" class="lightbox-trigger">
-                <img src="images/flag3.jpg" alt="Fl@g3">
-            </a>
-        </div>
+                <article class="maquina-card">
+                    <img src="images/hashcat.jpg" alt="Hashcat Cracking" class="maquina-thumb">
+                    <h3><a href="hashcat_unshadow.html">Hashcat y Unshadow: Crackeo de Hashes</a></h3>
+                    <p>Conceptos sobre el uso de Hashcat para descifrar hashes y el comando Unshadow para preparar archivos Linux.</p>
+                </article>
 
+                <article class="maquina-card">
+                    <img src="images/bluekeep.jpg" alt="BlueKeep logo" class="maquina-thumb">
+                    <h3><a href="bluekeep.html">INE - Vulnerabilidad RDP: BlueKeep</a></h3>
+                    <p>Guía de detección y explotación (controlada) de la vulnerabilidad BlueKeep (RDP, CVE-2019-0708) usando Metasploit.</p>
+                </article>
+
+                <article class="maquina-card">
+                    <img src="images/recuperacion_grub.jpg" alt="Recuperación GRUB Ubuntu EFI" class="maquina-thumb">
+                    <h3><a href="recuperar_grub.html">Recuperación de GRUB en Ubuntu (EFI)</a></h3>
+                    <p>Guía completa para restaurar el GRUB de Ubuntu en sistemas EFI, paso a paso, sin usar Boot-Repair.</p>
+                </article>
+                
+                <article class="maquina-card">
+                    <img src="images/eternalblue_logo.jpg" alt="Eternal Blue" class="maquina-thumb">
+                    <h3><a href="eternal_blue.html">Explotación MS17-010: Eternal Blue</a></h3>
+                    <p>Aquí tenemos la explicación sencilla de la explotación del Eternal Blue.</p>
+                </article>
+
+                <article class="maquina-card">
+                    <img src="images/smb_enum.jpg" alt="SMB Enumeration" class="maquina-thumb">
+                    <h3><a href="recuperar_grub.html">Enumeración en el servicio SMB)</a></h3>
+                    <p>Usando Metasploit, se procede a la explotación a través del puerto 445.</p>
+                </article>
+                
+            </div>
         </main>
-
-    <script src="lightbox.js"></script>
+    </div>
 </body>
 </html>

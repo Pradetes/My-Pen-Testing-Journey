@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperación de GRUB en Ubuntu (EFI)</title>
+    <meta name="description" content="Guía completa para la recuperación del GRUB en Ubuntu en sistemas con EFI, paso a paso, sin usar Boot-Repair.">
+    <meta name="author" content="José Prados">
+    
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+
+    <div class="fixed-header-container">
+        <header class="main-header">
+            <h1 class="site-title">Máquinas HTB / INE</h1>
+        </header>
+
+        <nav class="main-nav">
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="conocimientos.html">Mis Conocimientos</a></li>
+                <li><a href="maquinas.html" aria-current="page">Máquinas HTB / INE</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+            </ul>
+        </nav>
+
+        <hr class="divider">
+    </div>
+
+    <div class="content-wrapper">
+        <main class="maquina-guia">
+            
+            <h2 class="titulo-maquina">RECUPERACIÓN DE GRUB EN UBUNTU (EFI) - Resumen Completo</h2>
+            <p class="texto-maquina">
+                <strong>Resumen:</strong> Guía paso a paso para restaurar el GRUB de Ubuntu en un entorno EFI tras la pérdida de la partición, utilizando solo comandos de terminal.
+            </p>
+
+            <details>
+                <summary style="color: var(--color-oro); cursor: pointer;">ℹ️ Información del Entorno</summary>
+                <p style="margin-top: 10px;">
+                    <strong>Entorno:</strong> VirtualBox<br>
+                    <strong>Sistemas:</strong> Windows 11 (BitLocker) + Ubuntu 25.04<br>
+                    <strong>Problema:</strong> Borrada partición EFI &rarr; GRUB perdido<br>
+                    <strong>Objetivo:</strong> Recuperar Ubuntu sin Boot-Repair (solo comandos)<br>
+                    <strong>Fecha:</strong> 29 de octubre de 2025
+                </p>
+            </details>
+
+            <div class="texto-maquina">
+                
+                <h3>PARTICIONES IDENTIFICADAS</h3>
+                <ul>
+                    <li><strong>Disco principal:</strong> <code>/dev/sda</code> (100 GB)</li>
+                    <li><code>/dev/sda1</code> &rarr; EFI System (~500 MB, vfat)</li>
+                    <li><code>/dev/sda3</code> &rarr; Windows 11 (53 GB, BitLocker)</li>
+                    <li><code>/dev/sda5</code> &rarr; Ubuntu root (37 GB, ext4)</li>
+                </ul>
+
+                <h3>PASO 1: Arrancar en Ubuntu Live</h3>
+                <ol>
+                    <li>VirtualBox &rarr; Configuración &rarr; Almacenamiento</li>
+                    <li>Controlador IDE &rarr; CD vacío &rarr; Seleccionar <code>ubuntu-25.04.iso</code></li>
+                    <li>Sistema &rarr; Orden de arranque &rarr; Óptico primero + Habilitar EFI</li>
+                    <li>Iniciar VM &rarr; Elegir "Try Ubuntu without installing"</li>
+                </ol>
+                <p><strong>Propósito:</strong> Acceder al disco con terminal completa sin instalar nada.</p>
+
+                <h3>PASO 2: Identificar particiones</h3>
+                <p>Usa los siguientes comandos para verificar la estructura de tus particiones:</p>
+                <pre><code>lsblk -o NAME,SIZE,FSTYPE,MOUNTPOINT
+sudo fdisk -l /dev/sda</code></pre>
+                <p><strong>Confirmar:</strong></p>
+                <ul>
+                    <li><code>/dev/sda1</code> = EFI</li>
+                    <li><code>/dev/sda5</code> = Ubuntu root</li>
+                </ul>
+
+                <h3>PASO 3: Montar sistema y EFI</h3>
+                <pre><code>sudo mkdir -p /mnt
+sudo mkdir -p /mnt/boot/efi
+sudo mount /dev/sda5 /mnt
+sudo mount /dev/sda1 /mnt/boot/efi</code></pre>
+                <p><strong>Verificar:</strong></p>
+                <pre><code>mount | grep /mnt
+ls /mnt/boot/efi</code></pre>
+                <p><em>(Puedes ignorar la advertencia: "fstab has been modified")</em></p>
+
+                <h3>PASO 4: Montajes bind para chroot</h3>
+                <pre><code>sudo mount --bind /dev /mnt/dev
+sudo mount --bind /proc /mnt/proc
+sudo mount --bind /sys /mnt/sys
+sudo mount --bind /run /mnt/run</code></pre>
+                <p><strong>Propósito:</strong> Dar acceso al sistema montado a kernel, dispositivos y procesos.</p>
+
+                <h3>PASO 5: Entrar en chroot</h3>
+                <pre><code>sudo chroot /mnt</code></pre>
+                <p>El *prompt* cambiará a: <code>root@ubuntu:/#</code></p>
+
+                <h3>PASO 6: Montar efivars (OBLIGATORIO en UEFI)</h3>
+                <pre><code>mount -t efivarfs efivarfs /sys/firmware/efi/efivars</code></pre>
+                <p>Esto evita el error: "failed to get canonical path of /dev/sda1".</p>
+
+                <h3>PASO 7: Reinstalar GRUB (COMANDO CLAVE)</h3>
+                <pre><code>grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=ubuntu /dev/sda</code></pre>
+                <p><strong>Salida esperada:</strong></p>
+                <pre><code>Installing for x86_64-efi platform.
+Installation finished. No error reported.</code></pre>
+                
+                <h3>PASO 8: Actualizar menú GRUB</h3>
+                <pre><code>update-grub</code></pre>
+                <p>Esto detectará Windows, mostrando una salida similar a:</p>
+                <pre><code>Found Windows Boot Manager on /dev/sda1@/EFI/Microsoft/Boot/bootmgfw.efi</code></pre>
+
+                <h3>PASO 9: Salir y desmontar</h3>
+                <pre><code>exit
+sudo umount -l /mnt/sys
+sudo umount -l /mnt/proc
+sudo umount -l /mnt/dev
+sudo umount -l /mnt/run
+sudo umount /mnt/boot/efi
+sudo umount /mnt</code></pre>
+                <p>La opción <code>-l</code> (lazy unmount) soluciona el error "target is busy".</p>
+
+                <h3>PASO 10: Reiniciar sin ISO</h3>
+                <ol>
+                    <li>Apagar VM</li>
+                    <li>VirtualBox &rarr; Almacenamiento &rarr; Quitar ISO del CD</li>
+                    <li>Solo debería quedar el disco de Windows11.vdi</li>
+                    <li>Iniciar VM</li>
+                </ol>
+                <p><strong>Resultado esperado:</strong></p>
+                <pre><code>GNU GRUB → Ubuntu | Windows Boot Manager</code></pre>
+                
+            </div>
+
+            <p><a href="maquinas.html" style="color: var(--color-oro); text-decoration: none;">← Volver al Índice de Máquinas</a></p>
+        </main>
+    </div>
+
+</body>
+</html>

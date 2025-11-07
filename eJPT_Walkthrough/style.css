@@ -1,5 +1,5 @@
 /* Importar fuentes de Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Roboto+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700;900&family=Roboto+Mono:wght@400;700&display=swap');
 
 /* Definición de variables CSS para la paleta de colores */
 :root {
@@ -8,8 +8,9 @@
     --color-gris-claro: #E0E0E0;
     --color-blanco-calido: #F5F5DC;
     --color-gris-suave: #BDBDBD;
-    --color-gris-oscuro: #1a1a1a;
+    --color-gris-oscuro: #000000;
     --color-borde: #333;
+    --color-fondo-header: #030303;
 }
 
 /* Estilos generales para el cuerpo de la página */
@@ -29,19 +30,24 @@ body {
     left: 0;
     width: 100%;
     z-index: 1000;
-    background-color: var(--color-negro);
-    padding-bottom: 20px;
+    background-color: var(--color-fondo-header);
+    padding-bottom: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
 }
 
 /* Estilos para el encabezado */
 .main-header {
-    padding-top: 30px;
+    padding-top: 25px;
 }
 
 /* Animación para el título (efecto neón/glitch) */
 @keyframes neonGlow {
-    0%, 100% { text-shadow: 0 0 5px var(--color-oro), 0 0 10px var(--color-oro), 0 0 20px rgba(255, 215, 0, 0.4); }
-    50% { text-shadow: 0 0 2px var(--color-oro), 0 0 5px var(--color-oro), 0 0 10px rgba(255, 215, 0, 0.2); }
+    0%, 100% {
+        text-shadow: 0 0 5px var(--color-oro), 0 0 10px var(--color-oro), 0 0 20px rgba(255, 215, 0, 0.4);
+    }
+    50% {
+        text-shadow: 0 0 2px var(--color-oro), 0 0 5px var(--color-oro), 0 0 10px rgba(255, 215, 0, 0.2);
+    }
 }
 
 /* Estilos para el título principal */
@@ -56,14 +62,16 @@ body {
 
 /* Estilos para el logotipo */
 .logo {
-    width: 200px;
+    width: 250px;
     height: auto;
-    margin-bottom: 25px; /* Dejamos un margen inferior para separar del menú */
+    margin: 0 auto;
+    margin-top: 70px; /* <--- AÑADE ESTA LÍNEA PARA BAJARLO 40px */
     transition: filter 0.4s ease-in-out;
 }
 
+
 .logo:hover {
-    filter: brightness(1.2) drop-shadow(0 0 15px rgba(255, 215, 0, 0.6));
+    filter: brightness(1.2) drop-shadow(0 0 20px rgba(255, 215, 0, 0.8));
 }
 
 /* Estilos para el menú de navegación */
@@ -75,7 +83,7 @@ body {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 5px;
 }
 
 /* Estilos para los botones del menú */
@@ -84,7 +92,7 @@ body {
     display: inline-block;
     text-decoration: none;
     color: var(--color-negro);
-    font-weight: 400;
+    font-weight: 700;
     font-size: 1em;
     padding: 10px 20px;
     border: 1px solid var(--color-borde);
@@ -111,9 +119,9 @@ body {
 /* Efecto al pasar el ratón */
 .main-nav a:hover {
     background-color: var(--color-oro);
-    transform: translateY(-5px);
+    transform: translateY(-3px);
     color: var(--color-negro);
-    box-shadow: 0 0 10px var(--color-oro), 0 0 20px rgba(255, 215, 0, 0.4);
+    box-shadow: 0 0 15px var(--color-oro);
 }
 
 .main-nav a:hover::before {
@@ -125,8 +133,9 @@ body {
     border: none;
     height: 1px;
     background-color: var(--color-borde);
-    width: 70%;
-    margin: 20px auto;
+    width: 80%;
+    margin: 15px auto;
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
 }
 
 /* Animación de entrada para el contenedor del contenido */
@@ -143,28 +152,82 @@ body {
 
 /* Contenedor que empuja el contenido hacia abajo para que no quede bajo el menú fijo */
 .content-wrapper {
-    padding-top: 410px; /* Ajuste crucial para dar más espacio y ver el texto */
+    padding-top: 180px;
     animation: fadeIn 1s ease-in-out;
+}
+
+/* ---------------------------------------------------- */
+/* ESTILOS ESPECÍFICOS PARA INDEX (HERO SECTION) */
+/* ---------------------------------------------------- */
+
+.main-content {
+    padding: 40px 20px;
+    max-width: 1220px;
+    margin: 20px auto;
+    background-color: var(--color-gris-oscuro);
+    border: 2px solid var(--color-borde);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.15);
+    text-align: left;
+}
+
+.hero-section {
+    display: flex;
+    /* align-items: center; <-- Comentar o eliminar esta línea */
+    align-items: flex-start; /* Nueva alineación: arriba */
+    justify-content: space-between;
+    gap: 40px;
+    flex-wrap: wrap; 
+}
+
+.bio-text {
+    flex: 1;
+    min-width: 300px;
+}
+
+.bio-text h2 {
+    color: var(--color-oro);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 2em;
+    font-weight: 700;
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.7);
+    margin-top: 0;
+}
+
+.main-content p {
+    text-align: justify;
+    color: var(--color-gris-claro);
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1em;
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+/* Botón de Llamada a la Acción (CTA) */
+.cta-button {
+    display: inline-block;
+    background-color: var(--color-oro);
+    color: var(--color-negro);
+    font-family: 'Poppins', sans-serif;
+    font-weight: 900;
+    padding: 12px 25px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    box-shadow: 0 0 10px var(--color-oro), 0 0 20px rgba(255, 215, 0, 0.5);
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: #e0c200;
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px var(--color-oro), 0 0 30px rgba(255, 215, 0, 0.8);
 }
 
 /* ---------------------------------------------------- */
 /* ESTILOS ESPECÍFICOS POR PÁGINA */
 /* ---------------------------------------------------- */
 
-/* Estilos para el contenido de la página de Inicio */
-.main-content {
-    padding: 20px 20px;
-    max-width: 1220px;
-    margin: 20px auto;
-}
-
-.main-content p {
-    text-align: justify;
-    color: var(--color-blanco-calido);
-    font-family: 'Roboto Mono', monospace;
-}
-
-/* Estilos para la página de Contacto */
 .contacto-content {
     padding: 20px 20px;
     max-width: 1220px;
@@ -215,7 +278,6 @@ body {
     color: var(--color-oro);
 }
 
-/* Estilos para la página de Conocimientos */
 .conocimientos-content {
     padding: 20px 20px;
     max-width: 1220px;
@@ -266,7 +328,6 @@ body {
     top: -5px;
 }
 
-/* Estilos para las guías de Máquinas */
 .maquina-guia {
     text-align: left;
     max-width: 800px;
@@ -293,48 +354,88 @@ body {
     line-height: 1.6;
 }
 
-/* ---------------------------------------------------- */
-/* NUEVOS ESTILOS PARA LAS IMÁGENES Y EL LIGHTBOX */
-/* ---------------------------------------------------- */
-
-/* Ajuste de imágenes para que sean pequeñas y uniformes */
-.maquina-guia img {
-    width: 300px; /* Tamaño de ancho fijo */
-    height: auto; /* El alto se ajusta proporcionalmente */
-    cursor: pointer; /* Muestra una manito para indicar que es clicable */
-    display: block; /* Ocupa su propia línea */
-    margin: 15px auto; /* Centra la imagen y le da un poco de espacio */
-    border: 1px solid var(--color-borde); /* Un borde sutil para enmarcarla */
-    border-radius: 5px; /* Bordes redondeados */
-    transition: transform 0.3s ease-in-out;
+.maquina-lista {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
-.maquina-guia img:hover {
-    transform: scale(1.02); /* Efecto de "zoom" al pasar el ratón */
+.maquina-card {
+    background-color: var(--color-gris-oscuro);
+    border: 1px solid var(--color-borde);
+    border-radius: 10px;
+    padding: 15px;
+    text-align: left;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Estilo del lightbox (la ventana emergente) */
-.lightbox {
-    position: fixed;
-    top: 0;
-    left: 0;
+.maquina-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+}
+
+.maquina-thumb {
     width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.9); /* Fondo oscuro semitransparente */
-    display: none; /* Empieza oculto y JavaScript lo mostrará */
-    justify-content: center;
-    align-items: center;
-    z-index: 1000; /* Asegura que esté por encima de todo */
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
 }
 
-.lightbox-content {
-    max-width: 90%;
-    max-height: 90%;
+.maquina-card h3 {
+    color: var(--color-oro);
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.2em;
+    margin: 10px 0;
 }
 
-.lightbox-content img {
-    width: auto; /* La imagen se muestra en su tamaño original o el que permita el contenedor */
-    max-width: 100%;
-    max-height: 100%;
-    display: block;
+.maquina-card a {
+    text-decoration: none;
+    color: var(--color-oro);
+    transition: color 0.3s ease;
+}
+
+.maquina-card a:hover {
+    color: var(--color-blanco-calido);
+}
+
+.maquina-card p {
+    color: var(--color-gris-claro);
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95em;
+    line-height: 1.5;
+}
+
+/* ---------------------------------------------------- */
+/* Media Queries para Responsive Design */
+/* ---------------------------------------------------- */
+
+@media (max-width: 800px) {
+    .site-title {
+        font-size: 2em;
+    }
+    .hero-section {
+        flex-direction: column;
+        text-align: center;
+    }
+    .logo {
+        margin-top: 30px;
+    }
+    .bio-text {
+        text-align: center;
+    }
+    .main-content {
+        padding: 20px;
+    }
+    .cta-button {
+        display: block;
+        width: 80%;
+        margin: 20px auto;
+    }
+    .main-nav ul {
+        flex-direction: column;
+    }
 }

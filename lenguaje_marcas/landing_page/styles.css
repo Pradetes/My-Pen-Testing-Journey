@@ -1,0 +1,455 @@
+/* Variables y Reset Básico */
+:root {
+    --color-dark: #1f2937; /* Gray-800 - Usado para contraste sutil */
+    --color-darker: #0f0f0f; /* Un gris casi negro para las secciones */
+    --color-darkest: #000000; /* Fondo Negro Puro */
+    --color-primary: #3b82f6; /* Blue-500 */
+    --color-text: #ffffff; /* Blanco Puro */
+    --color-link: #93c5fd; /* Azul Claro para enlaces */
+    --color-accent: #2563eb; /* Azul Oscuro para botones */
+    --color-red: #ef4444;
+    --color-green: #34d399;
+    --color-orange: #fb923c;
+}
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--color-darkest); /* FONDO NEGRO */
+    color: var(--color-text);
+    line-height: 1.6;
+    scroll-behavior: smooth;
+}
+a {
+    text-decoration: none;
+}
+
+/* Layout Principal */
+.container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* --- 1. Header y Navegación --- */
+.header {
+    position: sticky;
+    top: 0;
+    background-color: var(--color-darkest); /* Fondo Negro Puro */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.4);
+    z-index: 50;
+}
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+}
+.logo-text {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: white;
+    letter-spacing: -0.025em;
+}
+.logo-accent {
+    color: var(--color-link);
+}
+/* Menú Desktop (Oculto por defecto en móvil) */
+.nav-menu {
+    display: none; 
+}
+.nav-menu a {
+    color: var(--color-text);
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    transition: color 0.2s;
+}
+.nav-menu a:hover {
+    color: var(--color-link);
+}
+.nav-contact {
+    background-color: var(--color-accent);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    transition: background-color 0.2s;
+}
+.nav-contact:hover {
+    background-color: #1d4ed8; 
+}
+
+/* Botón Móvil */
+.menu-button {
+    display: block;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    color: var(--color-text);
+}
+.mobile-menu {
+    display: none; /* Controlado por JavaScript */
+    background-color: var(--color-darkest); /* Fondo Negro Puro */
+    border-top: 1px solid #1f2937; 
+    padding: 0.5rem 0;
+    text-align: center;
+}
+.mobile-menu a {
+    display: block;
+    padding: 0.75rem 0;
+    margin: 0.25rem 0;
+    color: var(--color-text);
+    transition: background-color 0.2s;
+    border-radius: 0.375rem;
+}
+.mobile-menu a:hover {
+    background-color: var(--color-dark); /* Contraste sutil al hacer hover */
+}
+.mobile-menu .nav-contact {
+    display: block;
+    margin: 0.5rem auto;
+    width: 90%;
+    padding: 0.75rem;
+}
+
+/* --- 2. Secciones Generales --- */
+.section {
+    padding: 5rem 0;
+    border-top: 1px solid #1f2937; /* Separador sutil */
+}
+.section-dark {
+    background-color: var(--color-darker); /* Gris muy oscuro */
+}
+.section-darker {
+    background-color: var(--color-darkest); /* Negro Puro */
+}
+.section-title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    text-align: center;
+    color: var(--color-link);
+    margin-bottom: 3rem;
+}
+
+/* --- 3. Sección de Inicio (Hero) --- */
+.section-inicio {
+    padding: 5rem 0 8rem;
+    text-align: center;
+    /* Fondo con gradiente oscuro, manteniendo el azul para el acento */
+    background-image: linear-gradient(to right, #0d1e3d, var(--color-darkest)); 
+}
+.logo-hero {
+    width: 20rem;
+    height: 20rem;
+    object-fit: contain;
+    margin: 0 auto 1.5rem;
+}
+.hero-title {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: #bfdbfe; 
+    margin-bottom: 1rem;
+}
+.hero-subtitle {
+    font-size: 1.25rem;
+    color: #d1d5db; 
+    margin: 0 auto 2rem;
+    max-width: 48rem;
+}
+.hero-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+.hero-buttons a {
+    display: inline-block;
+    font-weight: 600;
+    padding: 0.75rem 2rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+.btn-primary {
+    background-color: var(--color-accent);
+    color: white;
+    box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.3);
+}
+.btn-primary:hover {
+    background-color: #1e40af; 
+}
+.btn-secondary {
+    border: 2px solid var(--color-accent);
+    color: var(--color-link);
+    background-color: var(--color-darkest);
+}
+.btn-secondary:hover {
+    background-color: var(--color-dark);
+    color: white;
+}
+
+/* --- 4. Sección Servicios --- */
+.service-grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 1fr;
+}
+.card {
+    background-color: var(--color-darker); /* Contraste sobre el negro puro */
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-top: 4px solid var(--color-accent);
+    transition: box-shadow 0.3s;
+}
+.card:hover {
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+}
+.card-icon {
+    color: var(--color-link);
+    margin-bottom: 1rem;
+}
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 0.75rem;
+}
+.card-text {
+    color: #cccccc; /* Gris más claro para mejorar la legibilidad */
+}
+
+/* --- 5. Sección Horario --- */
+.horario-box {
+    background-color: var(--color-darkest); /* Negro Puro */
+    padding: 2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    border: 1px solid #1f2937; 
+    max-width: 768px;
+    margin: 0 auto;
+}
+.horario-intro {
+    text-align: center; 
+    font-size: 1.125rem; 
+    margin-bottom: 1.5rem; 
+    color: #d1d5db;
+}
+.horario-grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: 1fr;
+}
+.horario-subtitle {
+    font-weight: 700;
+    font-size: 1.125rem;
+    color: var(--color-link);
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid #1f2937;
+    padding-bottom: 0.5rem;
+}
+.horario-list {
+    list-style: none;
+}
+.horario-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.25rem 0;
+}
+.horario-list span:first-child {
+    font-weight: 600;
+}
+.horario-list .closed {
+    color: var(--color-red); 
+}
+.horario-list .open {
+    color: var(--color-green); 
+}
+.horario-note {
+    margin-top: 2rem; 
+    font-size: 0.875rem; 
+    text-align: center; 
+    color: #9ca3af;
+}
+
+/* --- 6. Sección Contacto --- */
+.contact-grid {
+    display: grid;
+    gap: 3rem;
+    grid-template-columns: 1fr;
+}
+.contact-form-box {
+    background-color: var(--color-darker); /* Contraste sobre el negro puro */
+    padding: 2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    border: 2px solid #1e3a8a; 
+}
+.contact-form-box h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 1.25rem;
+}
+.contact-form {
+    display: flex; 
+    flex-direction: column; 
+    gap: 1rem;
+}
+.form-group {
+    margin-bottom: 0;
+}
+.form-group label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #d1d5db; 
+    margin-bottom: 0.25rem;
+}
+.form-group input, .form-group textarea {
+    display: block;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #4b5563; 
+    background-color: #1f2937; /* Gris más oscuro para campos */
+    color: white;
+    border-radius: 0.5rem;
+    transition: border-color 0.2s;
+}
+.form-group input:focus, .form-group textarea:focus {
+    border-color: var(--color-primary);
+    outline: none;
+}
+.form-button {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background-color: var(--color-accent);
+    color: white;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.form-button:hover {
+    background-color: #1d4ed8;
+}
+.contact-info-wrapper {
+    display: flex; 
+    flex-direction: column; 
+    gap: 2rem;
+    padding: 2rem 0; 
+}
+.contact-info-block h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-link);
+    margin-bottom: 0.5rem;
+}
+.contact-bold {
+    font-weight: bold; 
+    color: white;
+}
+.contact-info-block a {
+    color: var(--color-link);
+    text-decoration: underline;
+    font-size: 0.875rem;
+    display: inline-block;
+    margin-top: 0.25rem;
+}
+
+/* --- 7. Footer --- */
+.footer {
+    background-color: var(--color-darkest); /* Negro Puro */
+    padding: 2.5rem 0;
+    color: white;
+}
+.footer-content {
+    border-bottom: 1px solid #1e3a8a; 
+    padding-bottom: 2rem;
+    margin-bottom: 2rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+.footer h4 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #93c5fd; 
+    margin-bottom: 0.75rem;
+}
+.footer p {
+    font-size: 0.875rem;
+    color: #bfdbfe; 
+    margin-top: 0.5rem;
+}
+.footer-copyright {
+    margin-top: 1rem;
+}
+.rss-link {
+    color: var(--color-orange);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+.rss-link:hover {
+    color: #f97316; 
+}
+.rss-icon {
+    color: var(--color-orange);
+    width: 1.25rem;
+    height: 1.25rem;
+}
+.rss-note {
+    font-size: 0.75rem; 
+    color: #60a5fa; 
+    margin-top: 0.25rem;
+}
+.rss-note a {
+    text-decoration: underline; 
+    color: inherit;
+}
+.footer-bottom-text {
+    text-align: center;
+    font-size: 0.875rem;
+    color: #60a5fa; 
+}
+
+/* --- 8. Media Queries (Desktop) --- */
+@media (min-width: 768px) {
+    .nav-menu {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
+    }
+    .menu-button, .mobile-menu {
+        display: none !important;
+    }
+    .hero-title {
+        font-size: 3.75rem;
+    }
+    .hero-buttons {
+        flex-direction: row;
+        gap: 1rem;
+    }
+    .service-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .horario-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .contact-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .contact-info-wrapper {
+        padding: 0; 
+    }
+    .footer-content {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

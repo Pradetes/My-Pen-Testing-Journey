@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<biblioteca>
+    <libro id="L1" ISBN="978-3-16-148410-0">
+        <titulo>Práctica de XML</titulo>
+        <autor>María Yeah</autor>
+        <fecha>2015-03-01</fecha>
+        <estado disponible="sí"/>
+    </libro>
+
+    <libro id="L2" ISBN="978-0-12-345678-9">
+        <titulo>Aprende de XML</titulo>
+        <autor>Pepe Lo</autor>
+        <fecha>2025-01-20</fecha>
+        <estado disponible="no"/>
+    </libro>
+
+    <cliente id="C001">
+        <nombre>Jose Prados</nombre>
+        <ciudad>Málaga</ciudad>
+    </cliente>
+
+    <cliente id="C002">
+        <nombre>Ana Sanz</nombre>
+        <ciudad>Sevilla</ciudad>
+    </cliente>
+
+    <prestamo libro_ref="L2" cliente_ref="C001" fecha_vencimiento="2025-05-01"/>
+
+</biblioteca>

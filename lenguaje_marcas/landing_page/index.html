@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital de Alta Resolución (HAR) Roquetas de Mar</title>
+    <link rel="stylesheet" href="styles.css">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header class="header">
+        <div class="container header-content">
+            
+            <div class="logo">
+                <span class="logo-text">
+                    HAR <span class="logo-accent">Roquetas de Mar</span>
+                </span>
+            </div>
+
+            <nav class="nav-menu" id="desktop-menu">
+                <a href="#inicio">Inicio</a>
+                <a href="#servicios">Servicios</a>
+                <a href="#horario">Horario</a>
+                <a href="#contacto" class="nav-contact">Contacto</a>
+            </nav>
+
+            <button id="menu-button" class="menu-button">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+
+        <div id="mobile-menu" class="mobile-menu">
+            <nav>
+                <a href="#inicio">Inicio</a>
+                <a href="#servicios">Servicios</a>
+                <a href="#horario">Horario</a>
+                <a href="#contacto" class="nav-contact">Contacto</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="inicio" class="section-inicio">
+            <div class="container">
+                
+                <img src="img/logo_HR-removebg-preview.png" onerror="this.onerror=null; this.src='https://placehold.co/100x100/000/fff?text=Logo';" alt="Logotipo HAR Roquetas de Mar" class="logo-hero">
+                
+                <h1 class="hero-title">
+                    Salud de Alta Resolución cerca de ti
+                </h1>
+                <p class="hero-subtitle">
+                    El Hospital de Alta Resolución de Roquetas de Mar se compromete con tu bienestar, ofreciendo diagnósticos rápidos y atención especializada con la última tecnología.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#servicios" class="btn-primary">
+                        Ver Nuestros Servicios
+                    </a>
+                    <a href="#contacto" class="btn-secondary">
+                        Pedir Cita
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="servicios" class="section section-darker">
+            <div class="container">
+                <h2 class="section-title">Nuestros Servicios Clave</h2>
+                
+                <div class="service-grid">
+                    
+                    <div class="card">
+                        <div class="card-icon">
+                            <svg width="40" height="40" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path></svg>
+                        </div>
+                        <h3 class="card-title">Consultas de Especialidad</h3>
+                        <p class="card-text">Acceso a un amplio abanico de médicos especialistas sin necesidad de largos desplazamientos. Cardiología, Digestivo, Dermatología y más.</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">
+                            <svg width="40" height="40" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.364 1.636l-.707.707M17 19H7a2 2 0 01-2-2V7a2 2 0 012-2h10a2 2 0 012 2v10a2 2 0 01-2 2z"></path></svg>
+                        </div>
+                        <h3 class="card-title">Tecnología de Alta Resolución</h3>
+                        <p class="card-text">Equipamiento moderno para ecografías, resonancias y radiología, facilitando un diagnóstico preciso en el menor tiempo posible.</p>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-icon">
+                            <svg width="40" height="40" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                        </div>
+                        <h3 class="card-title">Unidad de Cirugía Mayor Ambulatoria (UCMA)</h3>
+                        <p class="card-text">Intervenciones quirúrgicas que no requieren ingreso hospitalario, permitiendo una recuperación cómoda desde tu hogar.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="horario" class="section section-dark">
+            <div class="container">
+                <h2 class="section-title">Horario de Atención</h2>
+                
+                <div class="horario-box">
+                    
+                    <p class="horario-intro">
+                        Nuestro compromiso es ofrecerte flexibilidad y disponibilidad.
+                    </p>
+
+                    <div class="horario-grid">
+                        
+                        <div>
+                            <h3 class="horario-subtitle">Consultas y Citas</h3>
+                            <ul class="horario-list">
+                                <li>
+                                    <span>Lunes a Viernes:</span>
+                                    <span>08:00h - 21:00h</span>
+                                </li>
+                                <li>
+                                    <span>Sábados y Domingos:</span>
+                                    <span class="closed">Cerrado</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h3 class="horario-subtitle">Urgencias (24h)</h3>
+                            <ul class="horario-list">
+                                <li>
+                                    <span>Atención de Urgencias:</span>
+                                    <span class="open">24 Horas / 7 Días</span>
+                                </li>
+                                <li>
+                                    <span>Festivos:</span>
+                                    <span class="open">24 Horas</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <p class="horario-note">
+                        *Para Urgencias vitales, por favor, contacte con el 061 o diríjase al hospital más cercano.
+                    </p>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="contacto" class="section section-darker">
+            <div class="container">
+                <h2 class="section-title">Contacta con Nosotros</h2>
+                
+                <div class="contact-grid">
+                    
+                    <div class="contact-form-box">
+                        <h3>Solicitud de Información</h3>
+                        <form action="#" method="POST" class="contact-form">
+                            <div class="form-group">
+                                <label for="nombre">Nombre Completo</label>
+                                <input type="text" id="nombre" name="nombre" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Correo Electrónico</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="mensaje">Mensaje / Consulta</label>
+                                <textarea id="mensaje" name="mensaje" rows="4" required></textarea>
+                            </div>
+                            <button type="submit" class="form-button">
+                                Enviar Consulta
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="contact-info-wrapper">
+                        
+                        <div class="contact-info-block">
+                            <h3>Teléfonos de Interés</h3>
+                            <p class="contact-bold">Citas: 950 00 00 00</p>
+                            <p class="contact-bold">Centralita: 950 11 22 33</p>
+                        </div>
+
+                        <div class="contact-info-block">
+                            <h3>Dirección</h3>
+                            <p>Avenida de las Gaviotas, s/n</p>
+                            <p>04740, Roquetas de Mar (Almería)</p>
+                            <a href="https://maps.app.goo.gl/EjemploRoquetas" target="_blank">Ver en Google Maps</a>
+                        </div>
+                        
+                        <div class="contact-info-block">
+                            <h3>Correo Electrónico</h3>
+                            <p>contacto.harroquetas@ejemplo.es</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                
+                <div>
+                    <h4>Hospital de Alta Resolución</h4>
+                    <p>
+                        HAR Roquetas de Mar. Comprometidos con la salud y la excelencia en la provincia de Almería.
+                    </p>
+                    <p class="footer-copyright">
+                        &copy; 2025. Todos los derechos reservados.
+                    </p>
+                </div>
+
+                <div>
+                    <h4>Mantente Informado</h4>
+                    <a href="https://ejemplo.com/harroquetas/rss.xml" target="_blank" class="rss-link">
+                        <svg class="rss-icon" viewBox="0 0 24 24" fill="currentColor"><circle cx="5.996" cy="18.003" r="1.998"></circle><path d="M5.996 14.004c3.312 0 5.997 2.686 5.997 5.998a1.998 1.998 0 003.996 0 9.993 9.993 0 00-9.993-9.994 1.998 1.998 0 000 3.996zm0-7.996c6.626 0 11.994 5.367 11.994 11.994a1.998 1.998 0 003.996 0C21.986 6.273 13.719-1.998 5.996-1.998a1.998 1.998 0 000 3.996z"></path></svg>
+                        <span>Suscribirse a Noticias RSS</span>
+                    </a>
+                    <p class="rss-note">
+                        Enlace para validación: <a href="https://validator.w3.org/feed/check.cgi?url=https%3A%2F%2Fejemplo.com%2Fharroquetas%2Frss.xml" target="_blank">Validar RSS</a>
+                    </p>
+                </div>
+
+                <div>
+                    <h4>Información del Autor/a</h4>
+                    <p>
+                        Diseño y desarrollo: [Tu Nombre Completo]
+                    </p>
+                    <p>
+                        Módulo: [Nombre del Módulo/Asignatura]
+                    </p>
+                    <p>
+                        Curso Académico: 2024/2025
+                    </p>
+                </div>
+            </div>
+            
+            <p class="footer-bottom-text">
+                Página web con fines didácticos para el Hospital de Alta Resolución de Roquetas de Mar.
+            </p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

